@@ -1,88 +1,77 @@
-version: '3.5'
-
+version: "3.2"
 services:
-  dash:
-    image: mauricenino/dashdot:latest
-    restart: unless-stopped
-    privileged: true
-    ports:
-      - '834:3001'
+  radarr:
+    image: ghcr.io/hotio/radarr
+    container_name: radarr
     volumes:
-      - /:/mnt/host:ro
-
-  portainer:
-    image: portainer/portainer-ce
-    restart: unless-stopped
+      - /home/antonin/radarr/config:/config/
+      - /home/antonin/radarr/data:/data/
     ports:
-      - 9000:9000
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
-
-  wallos:
-    container_name: wallos
-    image: bellamy/wallos:latest
-    restart: unless-stopped
-    ports:
-      - "8282:80/tcp"
+     - 7878:7878
     environment:
-      TZ: 'America/Toronto'
+     - PUID=0
+     - PGID=0
+     - UMASK=002
+     - TZ=Europe/Paris
+
+  sonarr:
+    image: ghcr.io/hotio/sonarr
+    container_name: sonarr
     volumes:
-      - '/srv/wallos/db:/var/www/html/db'
-      - '/srv/wallos/logos:/var/www/html/images/uploads/logos'
+      - /home/antonin/sonarr/config:/config/
+      - /home/antonin/sonarr/data:/data/
+    ports:
+     - 8989:8989
+    environment:
+     - PUID=0
+     - PGID=0
+     - UMASK=002
+     - TZ=Europe/Paris
+
+  qbittorrent:
+    container_name: qbittorrent
+    image: ghcr.io/hotio/qbittorrent
+    ports:
+      - 8080:8080
+    environment:
+      - PUID=0
+      - PGID=0
+      - UMASK=002
+      - TZ=Europe/Paris
+      - WEBUI_PORTS=8080/tcp,8080/udp
+    volumes:
+      - /home/antonin/qbittorrent/config:/config/
+      - /home/antonin/qbittorrent/data:/data/
 
   plex:
-    image: lscr.io/linuxserver/plex:latest
     container_name: plex
-    network_mode: host
-    restart: unless-stopped
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-      - VERSION=docker
-    volumes:
-      - '/srv/plex/library:/config'
-      - '/srv/plex/tvseries:/tv'
-      - '/srv/plex/movies:/movies'
-
-  adguardhome:
-    image: adguard/adguardhome
-    container_name: adguardhome
-    restart: unless-stopped
+    image: ghcr.io/hotio/plex
     ports:
-      - 53:53/tcp
-      - 53:53/udp
-      - 784:784/udp
-      - 853:853/tcp
-      - 3000:3000/tcp
-      - 80:80/tcp
-      - 443:443/tcp
-    volumes:
-      - './adguard_workdir:/opt/adguardhome/work'
-      - './adguard_confdir:/opt/adguardhome/conf'
-
-  homarr:
-    container_name: homarr
-    image: ghcr.io/ajnart/homarr:latest
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
-      - ./homarr/configs:/app/data/configs
-      - ./homarr/icons:/app/public/icons
-      - ./homarr/data:/data
-    ports:
-      - '7575:7575'
-
-  homarr-updater:
-    build: .
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - 32400:32400
     environment:
-      - HOMARR_URL=http://homarr:7575
-    depends_on:
-      - homarr
+      - PUID=0
+      - PGID=0
+      - UMASK=002
+      - TZ=Europe/Paris
+      - PLEX_CLAIM_TOKEN
+      - PLEX_ADVERTISE_URL
+      - PLEX_NO_AUTH_NETWORKS
+      - PLEX_BETA_INSTALL=false
+      - PLEX_PURGE_CODECS=false
+    volumes:
+      - /home/antonin/plex/config:/config/
+      - /home/antonin/plex/transcode:/transcode/
+      - /home/antonin/plex/data:/data/
 
-volumes:
-  portainer_data:
+  jackett:
+    container_name: jackett
+    image: ghcr.io/hotio/jackett
+    ports:
+      - 9117:9117
+    environment:
+      - PUID=0
+      - PGID=0
+      - UMASK=002
+      - TZ=Europe/Paris
+    volumes:
+      - /home/antonin/jackett/config:/config/
