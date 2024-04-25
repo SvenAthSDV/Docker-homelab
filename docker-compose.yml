@@ -68,11 +68,10 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
       - VERSION=docker
-      - PLEX_CLAIM= #optional
     volumes:
       - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/plex/config:/config/
       - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/plex/transcode:/transcode/
-      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/plex/data:/data/
+      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/Plex_Media:/Plex_Media/
     restart: unless-stopped
 
   jackett:
