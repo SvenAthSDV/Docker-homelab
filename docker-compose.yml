@@ -99,6 +99,7 @@ services:
       - '7575:7575'
 
   uptime-kuma:
+    container_name: Kuma
     image: louislam/uptime-kuma:1
     volumes:
       - ./data:/app/data
@@ -107,6 +108,7 @@ services:
     restart: unless-stopped
 
   dash:
+    container_name: Dash
     image: mauricenino/dashdot:latest
     restart: unless-stopped
     privileged: true
