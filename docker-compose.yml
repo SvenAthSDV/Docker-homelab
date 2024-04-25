@@ -1,0 +1,141 @@
+version: "3.2"
+services:
+  adguardhome:
+    image: adguard/adguardhome
+    container_name: adguardhome
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 784:784/udp
+      - 853:853/tcp
+      - 3000:3000/tcp
+      - 80:80/tcp
+      - 443:443/tcp
+    volumes:
+      - ./workdir:/opt/adguardhome/work
+      - ./confdir:/opt/adguardhome/conf
+    restart: unless-stopped
+    
+  radarr:
+    image: ghcr.io/hotio/radarr
+    container_name: radarr
+    volumes:
+      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/radarr/config:/config/
+      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/radarr/data:/data/
+    ports:
+     - 7878:7878
+    environment:
+     - PUID=0
+     - PGID=0
+     - UMASK=002
+     - TZ=Europe/Paris
+
+  sonarr:
+    image: ghcr.io/hotio/sonarr
+    container_name: sonarr
+    volumes:
+      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/sonarr/config:/config/
+      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/sonarr/data:/data/
+    ports:
+     - 8989:8989
+    environment:
+     - PUID=0
+     - PGID=0
+     - UMASK=002
+     - TZ=Europe/Paris
+
+  qbittorrent:
+    container_name: qbittorrent
+    image: ghcr.io/hotio/qbittorrent
+    ports:
+      - 8080:8080
+    environment:
+      - PUID=0
+      - PGID=0
+      - UMASK=002
+      - TZ=Europe/Paris
+      - WEBUI_PORTS=8080/tcp,8080/udp
+    volumes:
+      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/qbittorrent/config:/config/
+      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/qbittorrent/data:/data/
+
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - VERSION=docker
+    volumes:
+      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/plex/config:/config/
+      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/plex/transcode:/transcode/
+      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/Plex_Media:/Plex_Media/
+    restart: unless-stopped
+
+  jackett:
+    container_name: jackett
+    image: ghcr.io/hotio/jackett
+    ports:
+      - 9117:9117
+    environment:
+      - PUID=0
+      - PGID=0
+      - UMASK=002
+      - TZ=Europe/Paris
+    volumes:
+      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/jackett/config:/config/
+
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    restart: unless-stopped
+    volumes:
+      - ./homarr/configs:/app/data/configs
+      - ./homarr/icons:/app/public/icons
+      - ./homarr/data:/data
+    ports:
+      - '7575:7575'
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    volumes:
+      - ./data:/app/data
+    ports:
+      - 3001:3001
+    restart: unless-stopped
+
+  dash:
+    image: mauricenino/dashdot:latest
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - '834:3001'
+    volumes:
+      - /:/mnt/host:ro
+      
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/overseerr/config:/config
+    ports:
+      - 5055:5055
+    restart: unless-stopped
+    
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=Europe/London
+    ports:
+      - "${PORT:-8191}:8191"
+    restart: unless-stopped
