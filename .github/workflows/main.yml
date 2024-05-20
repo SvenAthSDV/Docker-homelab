@@ -20,10 +20,13 @@ jobs:
 
     - name: Add server to known_hosts
       run: |
-        ssh-keyscan -p 32360 88.173.47.125 >> ~/.ssh/known_hosts
+        mkdir -p ~/.ssh
+        ssh-keyscan -p 32360 88.173.47.125 > ~/.ssh/known_hosts
+        cat ~/.ssh/known_hosts
 
     - name: Copy docker-compose.yml to server
-      run: scp -P 32360 docker-compose.yml root@88.173.47.125:/home/sven/Docker-homelab/docker-compose.yml
+      run: scp -o StrictHostKeyChecking=accept-new -P 32360 docker-compose.yml root@88.173.47.125:/home/sven/Docker-homelab/docker-compose.yml
 
     - name: Deploy with Docker Compose
-      run: ssh -p 32360 root@88.173.47.125 "cd /home/sven/Docker-homelab && docker-compose pull && docker-compose up -d"
+      run: ssh -o StrictHostKeyChecking=accept-new -p 32360 root@88.173.47.125 "cd /home/sven/Docker-homelab && docker-compose pull && docker-compose up -d"
+
