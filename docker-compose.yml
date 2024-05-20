@@ -26,7 +26,7 @@ services:
       - homepage.name=overseerr
       - homepage.icon=https://static-00.iconduck.com/assets.00/overseerr-icon-512x512-i9uxvsi3.png
       - homepage.href=http://192.168.1.38:5055/
-      - homepage.description=Oversseers
+      - homepage.description=Oversseer
     volumes:
       - /DATA/AppData/overseerr/config:/config
     ports:
