@@ -38,7 +38,7 @@ services:
     image: linuxserver/prowlarr:1.9.4
     container_name: prowlarr
     labels:
-      - homepage.group=Telechargement
+      - homepage.group=Téléchargement
       - homepage.name=prowlarr
       - homepage.icon=https://static-00.iconduck.com/assets.00/prowlarr-icon-1024x1024-vyf0hy1t.png
       - homepage.href=http://192.168.1.38:9696/
@@ -54,7 +54,7 @@ services:
     image: hotio/qbittorrent:release-4.6.2
     container_name: qbittorrent
     labels:
-      - homepage.group=Telechargement
+      - homepage.group=Téléchargement
       - homepage.name=qbittorrent
       - homepage.icon=https://static-00.iconduck.com/assets.00/qbittorrent-icon-2048x2048-4u7bykpn.png
       - homepage.href=http://192.168.1.38:8181/
@@ -71,7 +71,7 @@ services:
     image: linuxserver/radarr:5.4.6
     container_name: radarr
     labels:
-      - homepage.group=Telechargement
+      - homepage.group=Téléchargement
       - homepage.name=radarr
       - homepage.icon=https://static-00.iconduck.com/assets.00/radarr-icon-1845x2048-97le6lim.png
       - homepage.href=http://192.168.1.38:7878/
@@ -89,7 +89,7 @@ services:
     image: linuxserver/sonarr:3.0.10
     container_name: sonarr
     labels:
-      - homepage.group=Telechargement
+      - homepage.group=Téléchargement
       - homepage.name=sonarr
       - homepage.icon=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHOGTXjcPOCdcTjg7-LKFUh71l5G0z0CFGf81FYVbnnw&s
       - homepage.href=http://192.168.1.38:8989/
