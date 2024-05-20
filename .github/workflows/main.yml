@@ -1,21 +1,25 @@
-stages:
-  - deploy
+name: Deploy Docker Compose
 
-variables:
-  DOCKER_HOST: "tcp://docker:2375/"
+on:
+  push:
+    paths:
+      - 'docker-compose.yml'
 
-before_script:
-  - apk update && apk add openssh
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-deploy:
-  stage: deploy
-  script:
-    - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - ssh-keyscan 192.168.1.38 >> ~/.ssh/known_hosts
-    - scp docker-compose.yml root@192.168.1.38:/path/to/your/docker-compose.yml
-    - ssh root@192.168.1.38 "cd /home/sven/Docker-homelab && docker-compose pull && docker-compose up -d"
-  only:
-    changes:
-      - docker-compose.yml
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Copy docker-compose.yml to server
+      run: scp docker-compose.yml user@192.168.1.38:/home/sven/Docker-homelab/docker-compose.yml
+
+    - name: Deploy with Docker Compose
+      run: ssh root@192.168.1.38 "cd /home/sven/Docker-homelab && docker-compose pull && docker-compose up -d"
