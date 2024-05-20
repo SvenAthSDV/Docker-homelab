@@ -1,0 +1,21 @@
+stages:
+  - deploy
+
+variables:
+  DOCKER_HOST: "tcp://docker:2375/"
+
+before_script:
+  - apk update && apk add openssh
+
+deploy:
+  stage: deploy
+  script:
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan 192.168.1.38 >> ~/.ssh/known_hosts
+    - scp docker-compose.yml root@192.168.1.38:/path/to/your/docker-compose.yml
+    - ssh root@192.168.1.38 "cd /home/sven/Docker-homelab && docker-compose pull && docker-compose up -d"
+  only:
+    changes:
+      - docker-compose.yml
