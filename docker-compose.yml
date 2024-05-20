@@ -1,143 +1,121 @@
-version: "3.2"
-services:
-  adguardhome:
-    image: adguard/adguardhome
-    container_name: adguardhome
-    ports:
-      - 53:53/tcp
-      - 53:53/udp
-      - 784:784/udp
-      - 853:853/tcp
-      - 3000:3000/tcp
-      - 80:80/tcp
-      - 443:443/tcp
-    volumes:
-      - ./workdir:/opt/adguardhome/work
-      - ./confdir:/opt/adguardhome/conf
-    restart: unless-stopped
-    
-  radarr:
-    image: ghcr.io/hotio/radarr
-    container_name: radarr
-    volumes:
-      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/radarr/config:/config/
-      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/radarr/data:/data/
-    ports:
-     - 7878:7878
-    environment:
-     - PUID=0
-     - PGID=0
-     - UMASK=002
-     - TZ=Europe/Paris
+version: '3.8'
 
-  sonarr:
-    image: ghcr.io/hotio/sonarr
-    container_name: sonarr
+services:
+  homeassistant:
+    image: homeassistant/home-assistant:2024.5
+    container_name: homeassistant
+    labels:
+      - homepage.group=Domotique
+      - homepage.name=homeassistant
+      - homepage.icon=https://static-00.iconduck.com/assets.00/home-assistant-icon-2048x2048-ar79ra8x.png
+      - homepage.href=http://192.168.1.38:8123/dashboard-dashboard/default_view
+      - homepage.description=Home Assistant
     volumes:
-      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/sonarr/config:/config/
-      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/sonarr/data:/data/
+      - /DATA/AppData/homeassistant/config:/config
     ports:
-     - 8989:8989
-    environment:
-     - PUID=0
-     - PGID=0
-     - UMASK=002
-     - TZ=Europe/Paris
+      - "8123:8123"
+    networks:
+      - home_net
+
+  overseerr:
+    image: linuxserver/overseerr:1.33.2
+    container_name: overseerr
+    labels:
+      - diun.enable=true
+      - homepage.group=Film et serie
+      - homepage.name=overseerr
+      - homepage.icon=https://static-00.iconduck.com/assets.00/overseerr-icon-512x512-i9uxvsi3.png
+      - homepage.href=http://192.168.1.38:5055/
+      - homepage.description=Oversseer
+    volumes:
+      - /DATA/AppData/overseerr/config:/config
+    ports:
+      - "5055:5055"
+    networks:
+      - home_net
+
+  prowlarr:
+    image: linuxserver/prowlarr:1.9.4
+    container_name: prowlarr
+    labels:
+      - homepage.group=Telechargement
+      - homepage.name=prowlarr
+      - homepage.icon=https://static-00.iconduck.com/assets.00/prowlarr-icon-1024x1024-vyf0hy1t.png
+      - homepage.href=http://192.168.1.38:9696/
+      - homepage.description=Prowlarr
+    volumes:
+      - /DATA/AppData/prowlarr/config:/config
+    ports:
+      - "9696:9696"
+    networks:
+      - home_net
 
   qbittorrent:
+    image: hotio/qbittorrent:release-4.6.2
     container_name: qbittorrent
-    image: ghcr.io/hotio/qbittorrent
-    ports:
-      - 8080:8080
-    environment:
-      - PUID=0
-      - PGID=0
-      - UMASK=002
-      - TZ=Europe/Paris
-      - WEBUI_PORTS=8080/tcp,8080/udp
+    labels:
+      - homepage.group=Telechargement
+      - homepage.name=qbittorrent
+      - homepage.icon=https://static-00.iconduck.com/assets.00/qbittorrent-icon-2048x2048-4u7bykpn.png
+      - homepage.href=http://192.168.1.38:8181/
+      - homepage.description=Qbittorrent
     volumes:
-      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/qbittorrent/config:/config/
-      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/qbittorrent/data:/data/
+      - /DATA:/DATA
+      - /DATA/AppData/qbittorrent/config:/config
+    ports:
+      - "8181:8080"
+    networks:
+      - home_net
 
-  plex:
-    image: lscr.io/linuxserver/plex:latest
-    container_name: plex
-    network_mode: host
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-      - VERSION=docker
+  radarr:
+    image: linuxserver/radarr:5.4.6
+    container_name: radarr
+    labels:
+      - homepage.group=Telechargement
+      - homepage.name=radarr
+      - homepage.icon=https://static-00.iconduck.com/assets.00/radarr-icon-1845x2048-97le6lim.png
+      - homepage.href=http://192.168.1.38:7878/
+      - homepage.description=Movie management
     volumes:
-      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/plex/config:/config/
-      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/plex/transcode:/transcode/
-      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/Plex_Media:/Plex_Media/
-    restart: unless-stopped
+      - /DATA/AppData/radarr/config:/config
+      - /DATA/Downloads:/downloads
+      - /DATA/Media/Movies:/movies
+    ports:
+      - "7878:7878"
+    networks:
+      - home_net
 
-  jackett:
-    container_name: jackett
-    image: ghcr.io/hotio/jackett
-    ports:
-      - 9117:9117
-    environment:
-      - PUID=0
-      - PGID=0
-      - UMASK=002
-      - TZ=Europe/Paris
+  sonarr:
+    image: linuxserver/sonarr:3.0.10
+    container_name: sonarr
+    labels:
+      - homepage.group=Telechargement
+      - homepage.name=sonarr
+      - homepage.icon=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHOGTXjcPOCdcTjg7-LKFUh71l5G0z0CFGf81FYVbnnw&s
+      - homepage.href=http://192.168.1.38:8989/
+      - homepage.description=Series management
+      - homepage.widget.type= sonarr
+      - homepage.widget.url= http://192.168.1.38:8989
+      - homepage.widget.key= 584da5babd7542eb9a07c20c77614849
     volumes:
-      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/jackett/config:/config/
+      - /DATA/AppData/sonarr/config:/config
+      - /DATA/Downloads:/downloads
+      - /DATA/Media/TV Shows:/tv
+    ports:
+      - "8989:8989"
+    networks:
+      - home_net
 
-  homarr:
-    container_name: homarr
-    image: ghcr.io/ajnart/homarr:latest
-    restart: unless-stopped
-    volumes:
-      - ./homarr/configs:/app/data/configs
-      - ./homarr/icons:/app/public/icons
-      - ./homarr/data:/data
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
     ports:
-      - '7575:7575'
+      - 3000:3000
+    volumes:
+      - /DATA/AppData/homepage:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock
 
-  uptime-kuma:
-    container_name: Kuma
-    image: louislam/uptime-kuma:1
-    volumes:
-      - ./data:/app/data
-    ports:
-      - 3001:3001
-    restart: unless-stopped
 
-  dash:
-    container_name: Dash
-    image: mauricenino/dashdot:latest
-    restart: unless-stopped
-    privileged: true
-    ports:
-      - '834:3001'
-    volumes:
-      - /:/mnt/host:ro
-      
-  overseerr:
-    image: lscr.io/linuxserver/overseerr:latest
-    container_name: overseerr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-    volumes:
-      - /srv/dev-disk-by-uuid-1160cba7-64ee-4202-8b1a-aa3a50564df0/docker/overseerr/config:/config
-    ports:
-      - 5055:5055
-    restart: unless-stopped
-    
-  flaresolverr:
-    image: ghcr.io/flaresolverr/flaresolverr:latest
-    container_name: flaresolverr
-    environment:
-      - LOG_LEVEL=${LOG_LEVEL:-info}
-      - LOG_HTML=${LOG_HTML:-false}
-      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
-      - TZ=Europe/London
-    ports:
-      - "${PORT:-8191}:8191"
-    restart: unless-stopped
+networks:
+  home_net:
+    driver: bridge
