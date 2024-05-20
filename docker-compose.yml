@@ -9,7 +9,7 @@ services:
       - homepage.name=homeassistant
       - homepage.icon=https://static-00.iconduck.com/assets.00/home-assistant-icon-2048x2048-ar79ra8x.png
       - homepage.href=http://192.168.1.38:8123/dashboard-dashboard/default_view
-      - homepage.description=Home Assistant testV7
+      - homepage.description=Home Assistant testV8
     volumes:
       - /DATA/AppData/homeassistant/config:/config
     ports:
