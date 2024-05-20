@@ -18,8 +18,11 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+    - name: Verify docker-compose.yml exists
+      run: ls -l docker-compose.yml
+
     - name: Copy docker-compose.yml to server
-      run: scp -P 32360 docker-compose.yml root@88.173.47.125:/home/sven/Docker-homelab/docker-compose.yml
+      run: scp -v -P 32360 docker-compose.yml root@88.173.47.125:/home/sven/Docker-homelab/docker-compose.yml
 
     - name: Deploy with Docker Compose
-      run: ssh -p 32360 root@88.173.47.125 "cd /home/sven/Docker-homelab && docker-compose pull && docker-compose up -d"
+      run: ssh -v -p 32360 root@88.173.47.125 "cd /home/sven/Docker-homelab && docker-compose pull && docker-compose up -d"
