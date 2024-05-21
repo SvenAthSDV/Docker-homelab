@@ -25,8 +25,9 @@ jobs:
         cat ~/.ssh/known_hosts
   
   Deploy:
-    - name: Copy docker-compose.yml to server
-      run: scp -o UserKnownHostsFile=~/.ssh/known_hosts -P 32360 docker-compose.yml root@88.173.47.125:/home/sven/Docker-homelab/docker-compose.yml
+    needs: test
+      - name: Copy docker-compose.yml to server
+        run: scp -o UserKnownHostsFile=~/.ssh/known_hosts -P 32360 docker-compose.yml root@88.173.47.125:/home/sven/Docker-homelab/docker-compose.yml
 
-    - name: Deploy with Docker Compose
-      run: ssh -o UserKnownHostsFile=~/.ssh/known_hosts -p 32360 root@88.173.47.125 "cd /home/sven/Docker-homelab && docker compose up -d"
+      - name: Deploy with Docker Compose
+        run: ssh -o UserKnownHostsFile=~/.ssh/known_hosts -p 32360 root@88.173.47.125 "cd /home/sven/Docker-homelab && docker compose up -d"
