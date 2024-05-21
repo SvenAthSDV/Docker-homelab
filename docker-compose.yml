@@ -122,24 +122,28 @@ services:
     networks:
       - home_net
       
-  pihole:
-    container_name: pihole
-    image: pihole/pihole:latest
-    labels:
+  
+   
+  adguardhome:
+    image: adguard/adguardhome
+    container_name: adguardhome
+     labels:
       - homepage.group=Supervision
-      - homepage.name=pihole
-      - homepage.icon=https://upload.wikimedia.org/wikipedia/commons/8/88/Pi-hole_Logo_2.png
+      - homepage.name=adguardhome
+      - homepage.icon=https://cdn.icon-icons.com/icons2/2699/PNG/512/adguard_logo_icon_167905.png
       - homepage.href=http://192.168.1.38:81
-      - homepage.description=Pihole
+      - homepage.description=Adguard
     ports:
-      - "54:53/tcp"
-      - "54:53/udp"
-      - "81:80/tcp"
-    environment:
-      TZ: 'Europe/Paris'
+      - 54:53/tcp
+      - 54:53/udp
+      - 788:784/udp
+      - 855:853/tcp
+      - 3002:3000/tcp
+      - 81:80/tcp
+      - 444:443/tcp
     volumes:
-      - './etc-pihole:/etc/pihole'
-      - './etc-dnsmasq.d:/etc/dnsmasq.d'
+      - ./workdir:/opt/adguardhome/work
+      - ./confdir:/opt/adguardhome/conf
     restart: unless-stopped
     networks:
       - home_net
