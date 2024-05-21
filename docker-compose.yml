@@ -121,13 +121,11 @@ services:
       - "8989:8989"
     networks:
       - home_net
-      
-  
-   
+         
   adguardhome:
     image: adguard/adguardhome
     container_name: adguardhome
-     labels:
+    labels:
       - homepage.group=Supervision
       - homepage.name=adguardhome
       - homepage.icon=https://cdn.icon-icons.com/icons2/2699/PNG/512/adguard_logo_icon_167905.png
@@ -142,8 +140,8 @@ services:
       - 81:80/tcp
       - 444:443/tcp
     volumes:
-      - ./workdir:/opt/adguardhome/work
-      - ./confdir:/opt/adguardhome/conf
+      - /DATA/AppData/adguard/work:/opt/adguardhome/work
+      - /DATA/AppData/adguard/config:/opt/adguardhome/conf
     restart: unless-stopped
     networks:
       - home_net
