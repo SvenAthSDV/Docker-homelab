@@ -1,6 +1,22 @@
 version: '3.8'
 
 services:
+  dash:
+    image: mauricenino/dashdot:latest
+    container_name: dash
+    labels:
+      - homepage.group=Supervision
+      - homepage.name=dash
+      -homepage.icon=https://getdashdot.com/img/logo512.png
+      -homepage.href=http://192.168.1.38:834
+      -homepage.description=Dash
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - '834:3001'
+    volumes:
+      - /:/mnt/host:ro
+      
   homeassistant:
     image: homeassistant/home-assistant:2024.5
     container_name: homeassistant
