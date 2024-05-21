@@ -129,7 +129,7 @@ services:
       - homepage.group=Supervision
       - homepage.name=pihole
       - homepage.icon=https://upload.wikimedia.org/wikipedia/commons/8/88/Pi-hole_Logo_2.png
-      - homepage.href=http://192.168.1.38:80
+      - homepage.href=http://192.168.1.38:81
       - homepage.description=Pihole
     ports:
       - "54:53/tcp"
