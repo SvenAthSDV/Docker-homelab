@@ -6,7 +6,7 @@ on:
       - 'docker-compose.yml'
 
 jobs:
-  Connection:
+  Connection-Deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,13 +24,10 @@ jobs:
         ssh-keyscan -p 32360 88.173.47.125 >> ~/.ssh/known_hosts
         cat ~/.ssh/known_hosts
     
-  deploy:
-    needs: Connection
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Copy docker-compose.yml to server
-        run: scp -o UserKnownHostsFile=~/.ssh/known_hosts -P 32360 docker-compose.yml root@88.173.47.125:/home/sven/Docker-homelab/docker-compose.yml
+    - name: Copy docker-compose.yml to server
+      run: scp -o UserKnownHostsFile=~/.ssh/known_hosts -P 32360 docker-compose.yml root@88.173.47.125:/home/sven/Docker-homelab/docker-compose.yml
 
-      - name: Deploy with Docker Compose
-        run: ssh -o UserKnownHostsFile=~/.ssh/known_hosts -p 32360 root@88.173.47.125 "cd /home/sven/Docker-homelab && docker compose up -d"
+    - name: Deploy with Docker Compose
+      run: ssh -o UserKnownHostsFile=~/.ssh/known_hosts -p 32360 root@88.173.47.125 "cd /home/sven/Docker-homelab && docker compose up -d"
+
+  
