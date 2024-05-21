@@ -121,6 +121,28 @@ services:
       - "8989:8989"
     networks:
       - home_net
+      
+    pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    labels:
+      - homepage.group=Supervision
+      - homepage.name=pihole
+      - homepage.icon=https://upload.wikimedia.org/wikipedia/commons/8/88/Pi-hole_Logo_2.png
+      - homepage.href=http://192.168.1.38:80
+      - homepage.description=Pihole
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "80:80/tcp"
+    environment:
+      TZ: 'Europe/Paris'
+    volumes:
+      - './etc-pihole:/etc/pihole'
+      - './etc-dnsmasq.d:/etc/dnsmasq.d'
+    restart: unless-stopped
+    networks:
+      - home_net
 
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
