@@ -122,35 +122,11 @@ services:
     networks:
       - home_net
          
-  adguardhome:
-    image: adguard/adguardhome
-    container_name: adguardhome
-    labels:
-      - homepage.group=Supervision
-      - homepage.name=adguardhome
-      - homepage.icon=https://cdn.icon-icons.com/icons2/2699/PNG/512/adguard_logo_icon_167905.png
-      - homepage.href=http://192.168.1.38:3002
-      - homepage.description=Adguard
-    ports:
-      - 54:53/tcp
-      - 54:53/udp
-      - 788:784/udp
-      - 855:853/tcp
-      - 3002:3000/tcp
-      - 81:80/tcp
-      - 444:443/tcp
-    volumes:
-      - /DATA/AppData/adguard/work:/opt/adguardhome/work
-      - /DATA/AppData/adguard/config:/opt/adguardhome/conf
-    restart: unless-stopped
-    networks:
-      - home_net
-
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
     ports:
-      - 3000:3000
+      - 4000:4000
     volumes:
       - /DATA/AppData/homepage:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
