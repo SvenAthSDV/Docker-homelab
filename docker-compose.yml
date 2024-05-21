@@ -129,7 +129,7 @@ services:
       - homepage.group=Supervision
       - homepage.name=adguardhome
       - homepage.icon=https://cdn.icon-icons.com/icons2/2699/PNG/512/adguard_logo_icon_167905.png
-      - homepage.href=http://192.168.1.38:81
+      - homepage.href=http://192.168.1.38:3002
       - homepage.description=Adguard
     ports:
       - 54:53/tcp
