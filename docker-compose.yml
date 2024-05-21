@@ -122,7 +122,7 @@ services:
     networks:
       - home_net
       
-    pihole:
+  pihole:
     container_name: pihole
     image: pihole/pihole:latest
     labels:
