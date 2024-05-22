@@ -92,6 +92,10 @@ services:
       - homepage.icon=https://static-00.iconduck.com/assets.00/radarr-icon-1845x2048-97le6lim.png
       - homepage.href=http://192.168.1.38:7878/
       - homepage.description=Movie management
+      - homapage.widget.type=radarr
+      - homepage.widget.type=radarr
+      - homepage.widget.url=http://192.168.1.38:7878
+      - homepage.widget.key=a88d629b4bca4822a4823d4421b4f3af
     volumes:
       - /DATA/AppData/radarr/config:/config
       - /DATA/Downloads:/downloads
