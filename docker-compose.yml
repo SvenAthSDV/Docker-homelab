@@ -1,4 +1,4 @@
-version: '3.8'
+ieversion: '3.8'
 
 services:
   dash:
@@ -139,7 +139,7 @@ services:
     volumes:
       - /DATA/AppData/sonarr/config:/config
       - /DATA/Downloads:/downloads
-      - /DATA/Media/TV Shows:/tv
+      - /DATA/Media/Serie:/serie
     ports:
       - "8989:8989"
     networks:
