@@ -114,7 +114,7 @@ services:
       - homepage.icon=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHOGTXjcPOCdcTjg7-LKFUh71l5G0z0CFGf81FYVbnnw&s
       - homepage.href=http://192.168.1.38:8989/
       - homepage.description=Series management
-      - homepage.widget.type= sonarr
+      - homepage.widget.type=sonarr
       - homepage.widget.url=http://192.168.1.38:8989
       - homepage.widget.key=584da5babd7542eb9a07c20c77614849
     volumes:
