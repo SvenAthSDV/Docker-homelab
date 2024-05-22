@@ -73,14 +73,14 @@ services:
       - homepage.group=Téléchargement Film
       - homepage.name=qbittorrent1
       - homepage.icon=https://static-00.iconduck.com/assets.00/qbittorrent-icon-2048x2048-4u7bykpn.png
-      - homepage.href=http://192.168.1.38:8181/
+      - homepage.href=http://192.168.1.38:8183/
       - homepage.description=Qbittorrent Film
     volumes:
       - /DATA:/DATA
       - /DATA/AppData/qbittorrent/config:/config
       - /DATA/Media/Movies:/donwnloadfilm
     ports:
-      - "8181:8080"
+      - "8183:8080"
     networks:
       - home_net
    
