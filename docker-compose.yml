@@ -66,7 +66,7 @@ services:
     networks:
       - home_net
 
-  qbittorrent:
+  qbittorrent1:
     image: hotio/qbittorrent:release-4.6.2
     container_name: qbittorrent1
     labels:
@@ -84,7 +84,7 @@ services:
     networks:
       - home_net
    
-  qbittorrent:
+  qbittorrent2:
     image: hotio/qbittorrent:release-4.6.2
     container_name: qbittorrent2
     labels:
