@@ -115,8 +115,8 @@ services:
       - homepage.href=http://192.168.1.38:8989/
       - homepage.description=Series management
       - homepage.widget.type= sonarr
-      - homepage.widget.url= http://192.168.1.38:8989
-      - homepage.widget.key= 584da5babd7542eb9a07c20c77614849
+      - homepage.widget.url=http://192.168.1.38:8989
+      - homepage.widget.key=584da5babd7542eb9a07c20c77614849
     volumes:
       - /DATA/AppData/sonarr/config:/config
       - /DATA/Downloads:/downloads
