@@ -68,18 +68,37 @@ services:
 
   qbittorrent:
     image: hotio/qbittorrent:release-4.6.2
-    container_name: qbittorrent
+    container_name: qbittorrent1
     labels:
-      - homepage.group=Téléchargement
-      - homepage.name=qbittorrent
+      - homepage.group=Téléchargement Film
+      - homepage.name=qbittorrent1
       - homepage.icon=https://static-00.iconduck.com/assets.00/qbittorrent-icon-2048x2048-4u7bykpn.png
       - homepage.href=http://192.168.1.38:8181/
-      - homepage.description=Qbittorrent
+      - homepage.description=Qbittorrent Film
     volumes:
       - /DATA:/DATA
       - /DATA/AppData/qbittorrent/config:/config
+      - /DATA/Media/Movies:/donwnloadfilm
     ports:
       - "8181:8080"
+    networks:
+      - home_net
+   
+    qbittorrent:
+    image: hotio/qbittorrent:release-4.6.2
+    container_name: qbittorrent2
+    labels:
+      - homepage.group=Téléchargement Serie
+      - homepage.name=qbittorrent2
+      - homepage.icon=https://static-00.iconduck.com/assets.00/qbittorrent-icon-2048x2048-4u7bykpn.png
+      - homepage.href=http://192.168.1.38:8182/
+      - homepage.description=Qbittorrent Serie
+    volumes:
+      - /DATA:/DATA
+      - /DATA/AppData/qbittorrent/config:/config
+      - /DATA/Media/Serie:/donwnloadserie
+    ports:
+      - "8182:8080"
     networks:
       - home_net
 
@@ -87,7 +106,7 @@ services:
     image: linuxserver/radarr:5.4.6
     container_name: radarr
     labels:
-      - homepage.group=Téléchargement
+      - homepage.group=Téléchargement Film
       - homepage.name=radarr
       - homepage.icon=https://static-00.iconduck.com/assets.00/radarr-icon-1845x2048-97le6lim.png
       - homepage.href=http://192.168.1.38:7878/
@@ -109,7 +128,7 @@ services:
     image: linuxserver/sonarr:3.0.10
     container_name: sonarr
     labels:
-      - homepage.group=Téléchargement
+      - homepage.group=Téléchargement Serie
       - homepage.name=sonarr
       - homepage.icon=https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHOGTXjcPOCdcTjg7-LKFUh71l5G0z0CFGf81FYVbnnw&s
       - homepage.href=http://192.168.1.38:8989/
