@@ -54,7 +54,7 @@ services:
     image: linuxserver/prowlarr:1.9.4
     container_name: prowlarr
     labels:
-      - homepage.group=Téléchargement
+      - homepage.group=Gestion Indexeur
       - homepage.name=prowlarr
       - homepage.icon=https://static-00.iconduck.com/assets.00/prowlarr-icon-1024x1024-vyf0hy1t.png
       - homepage.href=http://192.168.1.38:9696/
