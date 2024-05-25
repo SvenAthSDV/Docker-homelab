@@ -75,7 +75,7 @@ services:
       - homepage.icon=https://static-00.iconduck.com/assets.00/qbittorrent-icon-2048x2048-4u7bykpn.png
       - homepage.href=http://192.168.1.38:8183/
       - homepage.description=Qbittorrent Film
-      - homepage.widget.type=qbittorrent
+      - homepage.widget.type=qbittorrent1
       - homepage.widget.url=http://192.168.1.38:8183/
       - homepage.widget.username=admin
       - homepage.widget.password= adminadmin
