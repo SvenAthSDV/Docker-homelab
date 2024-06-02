@@ -38,7 +38,7 @@ services:
     container_name: overseerr
     labels:
       - diun.enable=true
-      - homepage.group=Film et serie
+      - homepage.group=Film et serie t
       - homepage.name=overseerr
       - homepage.icon=https://static-00.iconduck.com/assets.00/overseerr-icon-512x512-i9uxvsi3.png
       - homepage.href=http://192.168.1.38:5055/
