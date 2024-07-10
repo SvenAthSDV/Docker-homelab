@@ -30,6 +30,7 @@ services:
       - /DATA/AppData/homeassistant/config:/config
     ports:
       - "8123:8123"
+    restart: unless-stopped
     networks:
       - home_net
 
@@ -38,7 +39,7 @@ services:
     container_name: overseerr
     labels:
       - diun.enable=true
-      - homepage.group=Film et serie t
+      - homepage.group=Film et serie
       - homepage.name=overseerr
       - homepage.icon=https://static-00.iconduck.com/assets.00/overseerr-icon-512x512-i9uxvsi3.png
       - homepage.href=http://192.168.1.38:5055/
@@ -47,6 +48,7 @@ services:
       - /DATA/AppData/overseerr/config:/config
     ports:
       - "5055:5055"
+    restart: unless-stopped
     networks:
       - home_net
   
@@ -64,6 +66,7 @@ services:
       - /DATA/AppData/prowlarr/config:/config
     ports:
       - "9696:9696"
+    restart: unless-stopped
     networks:
       - home_net
 
@@ -86,6 +89,7 @@ services:
       - /DATA/Media/Movies:/donwnloadfilm
     ports:
       - "8183:8080"
+    restart: unless-stopped
     networks:
       - home_net
    
@@ -104,6 +108,7 @@ services:
       - /DATA/Media/Serie:/donwnloadserie
     ports:
       - "8182:8080"
+    restart: unless-stopped
     networks:
       - home_net
 
@@ -126,6 +131,7 @@ services:
       - /DATA/Media/Movies:/movies
     ports:
       - "7878:7878"
+    restart: unless-stopped
     networks:
       - home_net
 
@@ -147,6 +153,7 @@ services:
       - /DATA/Media/Serie:/serie
     ports:
       - "8989:8989"
+    restart: unless-stopped
     networks:
       - home_net
  
@@ -171,7 +178,8 @@ services:
     volumes:
       - /DATA/AppData/homepage:/app/config
       - /var/run/docker.sock:/var/run/docker.sock
-
+    restart: unless-stopped
+    
 networks:
   home_net:
     driver: bridge
